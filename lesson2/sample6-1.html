@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>sample1</title>
-
-  <!-- three.jsを読み込む(ローカル) -->
-  <!-- <script src="./three.js"></script> -->
-  <!-- three.jsを読み込む(CDN) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js"></script>
+   <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script>
 
 </head>
 <body>
@@ -26,7 +23,12 @@
     var scene = new THREE.Scene();
   
     // カメラを作成
-    var camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+const camera = new THREE.PerspectiveCamera(45, width / height);
+// カメラの初期座標を設定
+camera.position.set(0, 0, 1000);
+    
+    // カメラコントローラーを作成
+const controls = new THREE.OrbitControls(camera,document.body);
   
     // 箱を作成
     var geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3);
@@ -57,26 +59,16 @@
     directionalLight2.position.set(-1, 1, 1);
     // シーンに追加
     scene.add(directionalLight2);
-  
-    // 初回実行
-    var update = function() {
-      requestAnimationFrame(update);
-  
-      // 箱を回転させる
-      box1.rotation.x += 0.01;
-      box1.rotation.y += 0.01;
-      box2.rotation.x += 0.01;
-      box2.rotation.y += 0.01;
-      box3.rotation.x += 0.01;
-      box3.rotation.y += 0.01;
-      box4.rotation.x += 0.01;
-      box4.rotation.y += 0.01;
-  
-      renderer.render(scene, camera);
-    };
-    update();
-  }
-  window.addEventListener('DOMContentLoaded', init);
+    
+  tick();
+
+        // 毎フレーム時に実行されるループイベントです
+        function tick() {
+          // レンダリング
+          renderer.render(scene, camera);
+          requestAnimationFrame(tick);
+        }
+      }
 </script>
 </body>
 </html>
